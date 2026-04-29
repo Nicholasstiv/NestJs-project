@@ -10,7 +10,7 @@ async function bootstrap() {
       whitelist: true, // strips properties that don't have decorators
       forbidNonWhitelisted: true,
       transform: true, // automatically transforms payloads to be objects typed according to their dto classes
-      disableErrorMessages: true,
+      disableErrorMessages: false,
     }),
   );
 

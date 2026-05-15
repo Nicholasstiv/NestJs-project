@@ -13,7 +13,7 @@ export class PostsService {
     },
   ];
 
-  findAll(): Post[] {
+  asyncfindAll(): Post[] {
     return this.posts;
   }
 

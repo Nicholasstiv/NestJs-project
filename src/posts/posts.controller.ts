@@ -9,7 +9,6 @@ import {
   ParseIntPipe,
   Post,
   Put,
-  Query,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import type { Post as PostInterface } from './interfaces/post.interface';
@@ -22,42 +21,36 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
-  findAll(@Query('search') search?: string): PostInterface[] {
-    const extractAllPosts = this.postsService.findAll();
-
-    if (search) {
-      return extractAllPosts.filter((singlePost) =>
-        singlePost.title.toLowerCase().includes(search.toLowerCase()),
-      );
-    }
-
-    return extractAllPosts;
+  async findAll(): Promise<PostInterface[]> {
+    return this.postsService.findAll();
   }
 
   @Get(':id')
-  findOne(
-    @Param('id', ParseIntPipe, PostExistsPipe) id: number,
-  ): PostInterface {
-    return this.postsService.findOne(id);
+  async findOne(
+    @Param('id', ParseIntPipe, PostExistsPipe) id: string,
+  ): Promise<PostInterface> {
+    return await this.postsService.findOne(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createPostData: CreatePostDto): PostInterface {
+  async create(@Body() createPostData: CreatePostDto): Promise<PostInterface> {
     return this.postsService.create(createPostData);
   }
 
   @Put(':id')
-  update(
-    @Param('id', ParseIntPipe, PostExistsPipe) id: number,
+  async update(
+    @Param('id', ParseIntPipe, PostExistsPipe) id: string,
     @Body() updatePostData: UpdatePostDto,
-  ): PostInterface {
+  ): Promise<PostInterface> {
     return this.postsService.update(id, updatePostData);
   }
 
   @Delete()
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id', ParseIntPipe, PostExistsPipe) id: number): void {
-    this.postsService.remove(id);
+  async remove(
+    @Param('id', ParseIntPipe, PostExistsPipe) id: string,
+  ): Promise<void> {
+    await this.postsService.remove(id);
   }
 }

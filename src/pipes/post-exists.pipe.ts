@@ -5,7 +5,7 @@ import { PostsService } from '../posts/posts.service';
 export class PostExistsPipe implements PipeTransform {
   constructor(private readonly postsService: PostsService) {}
 
-  transform(value: number) {
+  transform(value: string) {
     try {
       this.postsService.findOne(value);
     } catch {

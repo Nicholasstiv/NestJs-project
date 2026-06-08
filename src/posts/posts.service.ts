@@ -24,15 +24,14 @@ export class PostsService {
   }
 
   async create(createPostData: CreatePostDto): Promise<Post> {
-    const newPost = await this.databaseService.post.create({
+    return this.databaseService.post.create({
       data: {
         title: createPostData.title,
         content: createPostData.content,
         authorName: createPostData.authorName,
+        authorId: createPostData.authorId,
       },
     });
-
-    return newPost;
   }
 
   async update(id: string, updatePostData: UpdatePostDto): Promise<Post> {

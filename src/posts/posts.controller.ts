@@ -6,7 +6,6 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -27,7 +26,7 @@ export class PostsController {
 
   @Get(':id')
   async findOne(
-    @Param('id', ParseIntPipe, PostExistsPipe) id: string,
+    @Param('id', PostExistsPipe) id: string,
   ): Promise<PostInterface> {
     return await this.postsService.findOne(id);
   }
@@ -40,17 +39,15 @@ export class PostsController {
 
   @Put(':id')
   async update(
-    @Param('id', ParseIntPipe, PostExistsPipe) id: string,
+    @Param('id', PostExistsPipe) id: string,
     @Body() updatePostData: UpdatePostDto,
   ): Promise<PostInterface> {
     return this.postsService.update(id, updatePostData);
   }
 
-  @Delete()
+  @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(
-    @Param('id', ParseIntPipe, PostExistsPipe) id: string,
-  ): Promise<void> {
+  async remove(@Param('id', PostExistsPipe) id: string): Promise<void> {
     await this.postsService.remove(id);
   }
 }

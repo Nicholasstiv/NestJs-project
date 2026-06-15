@@ -120,6 +120,18 @@ export class AuthService {
     }
   }
 
+  async getUserById(userId: string) {
+    const user = await this.databaseService.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) throw new UnauthorizedException('User not found');
+
+    const { password: _, ...result } = user;
+
+    return result;
+  }
+
   private async hashPassword(password: string): Promise<string> {
     return bcrypt.hash(password, 10);
   }
